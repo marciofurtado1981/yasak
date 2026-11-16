@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="YASAK">
+<link rel="manifest" href="manifest.json">
+<title>YASAK — Planeje. Evolua. Conquiste.</title>
+<style>
+:root{--bg:#0b1220;--panel:#121d2e;--panel2:#18263a;--gold:#d6ad55;--gold2:#f0d38c;--txt:#f5f2e9;--muted:#9aa8ba;--line:#29384d;--green:#59c69a;--red:#ff7777}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#18263a 0,#0b1220 58%);color:var(--txt);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:90px}
+header{padding:calc(env(safe-area-inset-top) + 20px) 20px 16px;max-width:900px;margin:auto}
+.brand{font-size:28px;font-weight:850;letter-spacing:5px;color:var(--gold)}.tag{font-size:10px;letter-spacing:2px;color:var(--muted);margin-top:3px}
+main{max-width:900px;margin:auto;padding:0 16px}.hero{background:linear-gradient(135deg,#1a2a40,#111b2b);border:1px solid #34445b;border-radius:22px;padding:20px;margin:8px 0 16px;box-shadow:0 16px 35px #0005}
+.eyebrow{color:var(--gold);font-size:11px;letter-spacing:1.6px;text-transform:uppercase}.target{font-size:34px;font-weight:800;margin:7px 0}.sub{color:var(--muted);font-size:13px}.progress{height:9px;background:#29384d;border-radius:20px;overflow:hidden;margin:16px 0 8px}.progress span{display:block;height:100%;background:linear-gradient(90deg,#b88b36,#f2d58c);width:0;border-radius:20px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}.stat{background:#0c1523a8;border:1px solid var(--line);border-radius:14px;padding:12px}.stat small{display:block;color:var(--muted);font-size:11px}.stat b{display:block;font-size:18px;margin-top:5px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:15px 0}.tab{background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:12px;padding:12px 5px;font-size:12px;font-weight:700}.tab.active{color:var(--gold2);border-color:var(--gold);background:#263247}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}.panel h2{font-size:17px;margin:0 0 12px}.row{display:flex;justify-content:space-between;gap:10px;align-items:center}.muted{color:var(--muted)}.amount{font-weight:750}.positive{color:var(--green)}.negative{color:var(--red)}
+button{font:inherit;cursor:pointer}.primary{background:linear-gradient(135deg,#d2a64d,#f0d38c);color:#1a1b1e;border:0;border-radius:12px;padding:12px 15px;font-weight:800}.secondary{background:#1a2a40;color:var(--gold2);border:1px solid #43536a;border-radius:12px;padding:10px 13px;font-weight:700}.danger{background:transparent;color:var(--red);border:0;padding:8px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.entry{padding:12px 0;border-bottom:1px solid var(--line)}.entry:last-child{border:0}.entry small{color:var(--muted)}
+label{display:block;color:var(--muted);font-size:12px;margin:10px 0 5px}input,select{width:100%;background:#0b1524;border:1px solid #34445b;border-radius:10px;padding:12px;color:var(--txt);font:inherit}form .primary{width:100%;margin-top:14px}
+.hidden{display:none!important}.notice{font-size:13px;color:var(--gold2);line-height:1.5}.bottom{position:fixed;bottom:0;left:0;right:0;background:#0b1220ed;border-top:1px solid var(--line);padding:12px 16px calc(env(safe-area-inset-bottom) + 12px);text-align:center;color:var(--muted);font-size:11px;backdrop-filter:blur(12px)}
+@media(min-width:650px){.stats{grid-template-columns:repeat(4,1fr)}.tab{font-size:14px}}
+</style>
+</head>
+<body>
+<header><div class="brand">YASAK</div><div class="tag">PLANEJE. EVOLUA. CONQUISTE.</div></header>
+<main>
+<section class="hero">
+ <div class="eyebrow">Sua jornada patrimonial</div>
+ <div class="target" id="goalLabel">R$ 1.000.000</div>
+ <div class="sub">Uma visão integrada do seu negócio, vida pessoal e investimentos.</div>
+ <div class="progress"><span id="progressBar"></span></div>
+ <div class="row"><small class="muted" id="progressText">0% da meta</small><small class="muted" id="remainingText">Faltam R$ 1.000.000</small></div>
+ <div class="stats">
+  <div class="stat"><small>Patrimônio atual</small><b id="netWorth">R$ 0,00</b></div>
+  <div class="stat"><small>Saldo empresarial</small><b id="businessBalance">R$ 0,00</b></div>
+  <div class="stat"><small>Saldo pessoal</small><b id="personalBalance">R$ 0,00</b></div>
+  <div class="stat"><small>Investido</small><b id="invested">R$ 0,00</b></div>
+ </div>
+</section>
+<nav class="tabs">
+ <button class="tab active" data-tab="visao">Visão geral</button>
+ <button class="tab" data-tab="empresa">Empresarial</button>
+ <button class="tab" data-tab="pessoal">Particular</button>
+ <button class="tab" data-tab="invest">Investimentos</button>
+</nav>
+<section id="view-visao">
+ <div class="panel"><div class="row"><h2>Indicadores e alertas</h2><span class="eyebrow">YASAK</span></div><div id="alerts" class="notice">Adicione receitas, despesas e investimentos para receber seus primeiros indicadores.</div></div>
+ <div class="panel"><h2>Projeção da meta</h2><div class="row"><span class="muted">Prazo planejado</span><b id="deadline">10 anos</b></div><div class="row" style="margin-top:10px"><span class="muted">Aporte mensal estimado*</span><b id="monthlyNeed">R$ 8.333,33</b></div><p class="muted" style="font-size:11px">*Estimativa simples, sem considerar rentabilidade, inflação ou impostos. Não é recomendação de investimento.</p><button class="secondary" id="settingsBtn">Configurar meta</button></div>
+</section>
+<section id="view-empresa" class="hidden"><div class="panel"><div class="row"><h2>Empresarial</h2><button class="primary" data-add="empresa">+ Lançamento</button></div><p class="muted">Registre receitas e despesas do negócio.</p><div id="list-empresa"></div></div></section>
+<section id="view-pessoal" class="hidden"><div class="panel"><div class="row"><h2>Particular</h2><button class="primary" data-add="pessoal">+ Lançamento</button></div><p class="muted">Organize entradas, gastos e compromissos pessoais.</p><div id="list-pessoal"></div></div></section>
+<section id="view-invest" class="hidden"><div class="panel"><div class="row"><h2>Investimentos</h2><button class="primary" data-add="invest">+ Aplicação</button></div><p class="muted">Acompanhe os valores aplicados. Rentabilidade poderá ser incluída numa próxima etapa.</p><div id="list-invest"></div></div></section>
+<section id="editor" class="panel hidden"><div class="row"><h2 id="formTitle">Novo lançamento</h2><button class="danger" id="closeEditor">Fechar ✕</button></div>
+<form id="entryForm"><input type="hidden" id="entryPillar"><label>Descrição</label><input id="description" required maxlength="70" placeholder="Ex.: venda, aluguel, aporte"><label>Tipo</label><select id="kind"><option value="receita">Receita / entrada</option><option value="despesa">Despesa / saída</option></select><label>Valor (R$)</label><input id="value" type="number" min="0.01" step="0.01" required placeholder="0,00"><label>Data</label><input id="date" type="date" required><button class="primary" type="submit">Salvar lançamento</button></form></section>
+<section id="settings" class="panel hidden"><div class="row"><h2>Configurar objetivo</h2><button class="danger" id="closeSettings">Fechar ✕</button></div><form id="settingsForm"><label>Meta patrimonial (R$)</label><input id="goalInput" type="number" min="1" step="1000" required><label>Prazo (anos)</label><input id="yearsInput" type="number" min="1" max="60" required><button class="primary">Salvar meta</button></form></section>
+<div class="panel"><p class="muted" style="font-size:11px">Versão inicial de validação. Os dados ficam armazenados neste navegador. Faça exportação/backup antes de trocar de aparelho ou limpar os dados do Safari. Ainda não há conta, sincronização em nuvem ou integração bancária.</p><button class="secondary" id="exportBtn">Exportar meus dados (JSON)</button></div>
+</main>
+<div class="bottom">YASAK • Planejamento patrimonial em três pilares</div>
+<script>
+const KEY='yasak-pwa-v1';
+let state=JSON.parse(localStorage.getItem(KEY)||'null')||{goal:1000000,years:10,entries:[]};
+const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n||0);
+const save=()=>{localStorage.setItem(KEY,JSON.stringify(state));render()};
+function sum(p,k){return state.entries.filter(e=>e.pillar===p&&e.kind===k).reduce((a,e)=>a+e.value,0)}
+function balance(p){return sum(p,'receita')-sum(p,'despesa')}
+function showTab(tab){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));['visao','empresa','pessoal','invest'].forEach(t=>document.getElementById('view-'+t).classList.toggle('hidden',t!==tab));hideEditors()}
+function hideEditors(){document.getElementById('editor').classList.add('hidden');document.getElementById('settings').classList.add('hidden')}
+function render(){
+ const invested=sum('invest','receita')-sum('invest','despesa');
+ const net=balance('empresa')+balance('pessoal')+invested;
+ const pct=Math.max(0,Math.min(100,net/state.goal*100));
+ document.getElementById('goalLabel').textContent=money(state.goal);
+ document.getElementById('netWorth').textContent=money(net);
+ document.getElementById('businessBalance').textContent=money(balance('empresa'));
+ document.getElementById('personalBalance').textContent=money(balance('pessoal'));
+ document.getElementById('invested').textContent=money(invested);
+ document.getElementById('progressBar').style.width=pct+'%';
+ document.getElementById('progressText').textContent=pct.toFixed(1).replace('.',',')+'% da meta';
+ document.getElementById('remainingText').textContent='Faltam '+money(Math.max(0,state.goal-net));
+ document.getElementById('deadline').textContent=state.years+' anos';
+ document.getElementById('monthlyNeed').textContent=money(Math.max(0,(state.goal-net)/(state.years*12)));
+ const alerts=[];
+ if(balance('empresa')<0)alerts.push('O saldo empresarial está negativo. Revise custos e despesas.');
+ if(balance('pessoal')<0)alerts.push('O saldo pessoal está negativo. Revise seus gastos.');
+ if(invested<0)alerts.push('Os resgates registrados superam os aportes registrados.');
+ if(net<0)alerts.push('Seu patrimônio calculado está negativo. Confira os lançamentos.');
+ document.getElementById('alerts').innerHTML=alerts.length?alerts.map(x=>'• '+x).join('<br>'):'Sem alertas com os dados atuais. Mantenha os lançamentos atualizados.';
+ ['empresa','pessoal','invest'].forEach(p=>{
+  const el=document.getElementById('list-'+p);
+  const arr=state.entries.filter(e=>e.pillar===p).slice().reverse();
+  el.innerHTML=arr.length?arr.map(e=>`<div class="entry row"><div><b>${escapeHtml(e.description)}</b><br><small>${e.date} • ${e.kind==='receita'?'Entrada':'Saída'}</small></div><div class="row"><span class="amount ${e.kind==='receita'?'positive':'negative'}">${e.kind==='receita'?'+':'−'} ${money(e.value)}</span><button class="danger" data-delete="${e.id}">Excluir</button></div></div>`).join(''):'<p class="muted">Nenhum lançamento ainda.</p>';
+ });
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>{hideEditors();document.getElementById('entryPillar').value=b.dataset.add;document.getElementById('kind').value='receita';document.getElementById('date').value=new Date().toISOString().slice(0,10);document.getElementById('formTitle').textContent=b.dataset.add==='invest'?'Nova aplicação':'Novo lançamento';document.getElementById('editor').classList.remove('hidden');document.getElementById('editor').scrollIntoView({behavior:'smooth'});}));
+document.getElementById('closeEditor').onclick=hideEditors;document.getElementById('closeSettings').onclick=hideEditors;
+document.getElementById('entryForm').addEventListener('submit',e=>{e.preventDefault();state.entries.push({id:Date.now().toString(),pillar:document.getElementById('entryPillar').value,description:document.getElementById('description').value.trim(),kind:document.getElementById('kind').value,value:Number(document.getElementById('value').value),date:document.getElementById('date').value});e.target.reset();hideEditors();save()});
+document.addEventListener('click',e=>{const id=e.target.dataset.delete;if(id&&confirm('Excluir este lançamento?')){state.entries=state.entries.filter(x=>x.id!==id);save()}});
+document.getElementById('settingsBtn').onclick=()=>{document.getElementById('goalInput').value=state.goal;document.getElementById('yearsInput').value=state.years;document.getElementById('settings').classList.remove('hidden');document.getElementById('settings').scrollIntoView({behavior:'smooth'})};
+document.getElementById('settingsForm').addEventListener('submit',e=>{e.preventDefault();state.goal=Number(document.getElementById('goalInput').value);state.years=Number(document.getElementById('yearsInput').value);hideEditors();save()});
+document.getElementById('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='yasak-backup.json';a.click();URL.revokeObjectURL(a.href)};
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+render();
+</script>
+</body></html>
